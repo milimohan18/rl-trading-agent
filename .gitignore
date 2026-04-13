@@ -1,0 +1,26 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+ENV/
+
+# Data
+data/*.csv
+data/*.npz
+
+# Results and MLflow Tracking
+results/
+mlruns/
+*.zip
+*.png
+*.json
+
+# VS Code
+.vscode/
+
+# Ignore config files with potential sensitive keys (though we use none currently)
+# .env
