@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/MILI PC/Documents/rl_trading_agent/results/mlruns/572401612292470250/6ceea6dc259249099fdfb92a28c72ad9/artifacts
+end_time: 1776051641846
+entry_point_name: ''
+experiment_id: '572401612292470250'
+lifecycle_stage: active
+run_id: 6ceea6dc259249099fdfb92a28c72ad9
+run_name: DQN
+run_uuid: 6ceea6dc259249099fdfb92a28c72ad9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776051176218
+status: 3
+tags: []
+user_id: MILI PC

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/MILI PC/Documents/rl_trading_agent/results/mlruns/572401612292470250/9825f88eaf5f4f739b7f3944e38f55ec/artifacts
+end_time: 1776052563406
+entry_point_name: ''
+experiment_id: '572401612292470250'
+lifecycle_stage: active
+run_id: 9825f88eaf5f4f739b7f3944e38f55ec
+run_name: PPO
+run_uuid: 9825f88eaf5f4f739b7f3944e38f55ec
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1776051641857
+status: 3
+tags: []
+user_id: MILI PC

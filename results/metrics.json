@@ -1,0 +1,29 @@
+[
+  {
+    "strategy": "DQN",
+    "total_return_pct": 69.59,
+    "sharpe_ratio": 1.6872,
+    "max_drawdown_pct": -14.16,
+    "win_rate_pct": 71.43,
+    "total_trades": 29,
+    "calmar_ratio": 4.9129
+  },
+  {
+    "strategy": "PPO",
+    "total_return_pct": 39.0,
+    "sharpe_ratio": 1.5017,
+    "max_drawdown_pct": -13.16,
+    "win_rate_pct": 0.0,
+    "total_trades": 1,
+    "calmar_ratio": 2.964
+  },
+  {
+    "strategy": "Buy & Hold",
+    "total_return_pct": -36.73,
+    "sharpe_ratio": -1.105,
+    "max_drawdown_pct": -49.74,
+    "win_rate_pct": 0.0,
+    "total_trades": 1,
+    "calmar_ratio": -0.7385
+  }
+]
