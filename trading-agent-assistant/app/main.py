@@ -11,12 +11,15 @@ from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 # Load environment before importing agent
 load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 from app.agent import ask  # noqa: E402
+
+_INDEX_HTML = os.path.join(os.path.dirname(__file__), "static", "index.html")
 
 # Any one of these enables the agent (see app.agent.ask for precedence)
 _PROVIDER_KEYS = ("GROQ_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_API_KEY")
@@ -86,6 +89,12 @@ class AskResponse(BaseModel):
 
 
 # ── Endpoints ───────────────────────────────────────────────────────────────
+
+@app.get("/", include_in_schema=False)
+async def index():
+    """Chat page — a browser front end for POST /ask."""
+    return FileResponse(_INDEX_HTML)
+
 
 @app.get("/health")
 async def health():
