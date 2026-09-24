@@ -22,3 +22,6 @@ chroma_data/
 # OS
 .DS_Store
 Thumbs.db
+
+# ChromaDB embedding model (downloaded at build time)
+.chroma_models/

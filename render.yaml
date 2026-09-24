@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: trading-agent-assistant
+    runtime: python
+    # Deploys only the FastAPI service; the RL training code at the repo root
+    # (torch / stable-baselines3) is not needed at runtime and is not installed.
+    rootDir: trading-agent-assistant
+    plan: free
+    buildCommand: pip install -r requirements.txt && python -m app.tools.vector_search
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      # LLM provider keys: set at least one in the Render dashboard.
+      # If several are set, precedence is GROQ > ANTHROPIC > OPENAI.
+      - key: GROQ_API_KEY
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false

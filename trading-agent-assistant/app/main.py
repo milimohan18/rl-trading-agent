@@ -18,6 +18,13 @@ load_dotenv(os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 from app.agent import ask  # noqa: E402
 
+# Any one of these enables the agent (see app.agent.ask for precedence)
+_PROVIDER_KEYS = ("GROQ_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_API_KEY")
+
+
+def _api_key_configured() -> bool:
+    return any(os.getenv(k) for k in _PROVIDER_KEYS)
+
 
 # ── Lifespan ────────────────────────────────────────────────────────────────
 
@@ -25,9 +32,10 @@ from app.agent import ask  # noqa: E402
 async def lifespan(app: FastAPI):
     """Startup / shutdown hooks."""
     # Verify API key is configured (warn early, don't crash)
-    if not os.getenv("ANTHROPIC_API_KEY"):
+    if not _api_key_configured():
         print(
-            "\n⚠️  WARNING: ANTHROPIC_API_KEY is not set. "
+            "\n⚠️  WARNING: none of GROQ_API_KEY, ANTHROPIC_API_KEY or "
+            "OPENAI_API_KEY is set. "
             "Requests to /ask will fail.\n"
             "   Copy .env.example to .env and add your key.\n"
         )
@@ -85,7 +93,7 @@ async def health():
     return {
         "status": "ok",
         "service": "trading-agent-assistant",
-        "api_key_configured": bool(os.getenv("ANTHROPIC_API_KEY")),
+        "api_key_configured": _api_key_configured(),
     }
 
 
@@ -101,12 +109,12 @@ async def ask_endpoint(request: AskRequest):
     if not question:
         raise HTTPException(status_code=400, detail="Question cannot be empty.")
 
-    if not os.getenv("ANTHROPIC_API_KEY"):
+    if not _api_key_configured():
         raise HTTPException(
             status_code=500,
             detail=(
-                "ANTHROPIC_API_KEY is not configured. "
-                "Set it in your .env file."
+                "No LLM API key is configured. Set GROQ_API_KEY, "
+                "ANTHROPIC_API_KEY or OPENAI_API_KEY."
             ),
         )
 

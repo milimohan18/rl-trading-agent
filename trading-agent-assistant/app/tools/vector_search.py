@@ -11,13 +11,20 @@ To enable this tool, install chromadb:
 from __future__ import annotations
 
 import json
+from pathlib import Path
 from typing import Any, Dict, List
 
 try:
     import chromadb
+    from chromadb.utils.embedding_functions import ONNXMiniLM_L6_V2
     CHROMADB_AVAILABLE = True
 except ImportError:
     CHROMADB_AVAILABLE = False
+
+# Keep the embedding model inside the project instead of ~/.cache so a copy
+# fetched at build time (python -m app.tools.vector_search) survives into
+# the runtime on hosts like Render, where only the project dir is kept.
+_MODEL_DIR = Path(__file__).resolve().parent.parent.parent / ".chroma_models"
 
 
 # ── Sample documents ────────────────────────────────────────────────────────
@@ -185,10 +192,16 @@ def _init_chroma():
         return None
 
     try:
-        client = chromadb.Client()  # Ephemeral in-memory Chroma client
+        embedding_fn = ONNXMiniLM_L6_V2()
+        embedding_fn.DOWNLOAD_PATH = _MODEL_DIR / ONNXMiniLM_L6_V2.MODEL_NAME
+
+        # Ephemeral in-memory client: the collection is rebuilt from
+        # INDICATOR_DOCS on every startup, so there is no on-disk state to lose.
+        client = chromadb.Client()
         collection = client.get_or_create_collection(
             name="market_context",
             metadata={"description": "Indicator explanations and market notes"},
+            embedding_function=embedding_fn,
         )
 
         if collection.count() == 0:
@@ -286,3 +299,11 @@ TOOL_SCHEMA = {
         "required": ["query"],
     },
 }
+
+
+if __name__ == "__main__":
+    # Build step: importing this module downloads the embedding model and
+    # indexes the docs; fail the build if that didn't work.
+    if _get_collection() is None:
+        raise SystemExit("ChromaDB collection failed to initialize")
+    print(f"ChromaDB ready: {_get_collection().count()} docs, model in {_MODEL_DIR}")
