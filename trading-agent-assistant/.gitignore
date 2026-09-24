@@ -1,0 +1,24 @@
+# Environment variables (contains API keys)
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# ChromaDB local storage
+chroma_data/
+
+# OS
+.DS_Store
+Thumbs.db
